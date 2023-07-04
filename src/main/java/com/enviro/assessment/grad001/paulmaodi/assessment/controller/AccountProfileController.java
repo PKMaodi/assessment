@@ -21,13 +21,13 @@ public class AccountProfileController {
     @Autowired private AccountProfileService accountProfilesService;
 
     //Save to database
-    @PostMapping("/accountProfile")
+    @PostMapping("/{name}/{surname}/{\\w\\. \\w}")
     public AccountProfile saveAccountProfile(@Valid @RequestBody AccountProfile accountProfile){
         return accountProfilesService.createProfile(accountProfile);
     }
 
     //Read from Database
-    @GetMapping("/accountProfile")
+    @GetMapping("/{name}/{surname}/{\\w\\. \\w}")
     public List<AccountProfile> getAccountProfile(){
         return accountProfilesService.readProfile();
     }
