@@ -22,7 +22,6 @@ public class ParseFile implements FileParser{
         String lineString;
         String[] records;
 
-        List<AccountProfile> profiles = new ArrayList<>();
         flReader = new FileReader(csvFile);
         buReader = new BufferedReader(flReader);
         lineString = buReader.readLine();
@@ -37,13 +36,14 @@ public class ParseFile implements FileParser{
             fileExtension = records[2];
             accountProfile.setHttpImageLink(records[3]);
             
-            //Save each profile
-            profiles.add(accountProfile);
+            //add the account profile to the H2 database
+            
+
 
         }
 
         //Persist the profiles to the database
-        
+
         
         
         

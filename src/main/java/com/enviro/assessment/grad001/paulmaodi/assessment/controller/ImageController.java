@@ -12,6 +12,7 @@ public class ImageController {
     
     @GetMapping(value = "/{name}/{surname}/{\\w\\. \\w}")
     public FileSystemResource gethttpAddedImageLink(@PathVariable String name, @PathVariable String surname){
+        return null;
         //return the result
 
     }
