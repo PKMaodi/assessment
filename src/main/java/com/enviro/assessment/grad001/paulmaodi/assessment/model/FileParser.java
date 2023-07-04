@@ -1,4 +1,4 @@
-package com.enviro.assessment.grad001.paulmaodi.assessment;
+package com.enviro.assessment.grad001.paulmaodi.assessment.model;
 
 import java.io.File;
 import java.net.URI;

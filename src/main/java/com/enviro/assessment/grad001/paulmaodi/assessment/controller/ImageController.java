@@ -1,4 +1,4 @@
-package com.enviro.assessment.grad001.paulmaodi.assessment;
+package com.enviro.assessment.grad001.paulmaodi.assessment.controller;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.bind.annotation.GetMapping;
