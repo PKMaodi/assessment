@@ -1,4 +1,4 @@
-package com.enviro.assessment.grad001.paulmaodi.assessment.model;
+package com.enviro.assessment.grad001.paulmaodi.assessment.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,6 +22,8 @@ public class ParseFile implements FileParser{
     public ParseFile(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
+    public ParseFile() {
+    }
 
     @Override
     public void parseCSV(File csvFile) throws IOException{
@@ -39,8 +41,7 @@ public class ParseFile implements FileParser{
             //set the surname
             accountProfile.setSurname(tokens[1]);
             //set the image format
-            fileExtension = tokens[2].split("/")[1];
-            accountProfile.setImageFormat(fileExtension);
+            accountProfile.setImageFormat(tokens[2]);
             //set the http image link
             File fileImage = convertCSVDataToImage(tokens[3]);
             accountProfile.setHttpImageLink(createImageLink(fileImage));
@@ -63,7 +64,7 @@ public class ParseFile implements FileParser{
         //decode the base64 data
         byte[] imgData = Base64.getDecoder().decode(base64ImageData);
         //create a new file
-        File imaFile = File.createTempFile("image", fileExtension);
+        File imaFile = File.createTempFile("image", ".png");
         //write the data to the file
         OutputStream outputStream = new FileOutputStream(imaFile);
         outputStream.write(imgData);
