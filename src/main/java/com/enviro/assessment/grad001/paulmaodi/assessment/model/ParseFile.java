@@ -77,8 +77,7 @@ public class ParseFile implements FileParser{
 
     @Override
     public URI createImageLink(File fileImage) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createImageLink'");
+        return URI.create("http://localhost:8080/v1/api/image/" + fileImage.getName());
     }
     
 }
