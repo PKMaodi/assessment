@@ -9,8 +9,6 @@ import java.nio.file.Files;
 import java.util.Base64;
 import java.util.List;
 
-import javax.swing.text.html.parser.Entity;
-
 import com.enviro.assessment.grad001.paulmaodi.assessment.entity.AccountProfile;
 
 import jakarta.persistence.EntityManager;
