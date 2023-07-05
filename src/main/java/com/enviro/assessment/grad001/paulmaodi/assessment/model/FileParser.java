@@ -6,6 +6,6 @@ import java.net.URI;
 
 public interface FileParser {
     void parseCSV(File csvFile) throws IOException;
-    File convertCSVDataToImage(String base64ImageData);
+    File convertCSVDataToImage(String base64ImageData) throws IOException;
     URI createImageLink(File fileImage);
 }

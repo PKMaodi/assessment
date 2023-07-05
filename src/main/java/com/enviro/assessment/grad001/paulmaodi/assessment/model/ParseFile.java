@@ -1,9 +1,12 @@
 package com.enviro.assessment.grad001.paulmaodi.assessment.model;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.Files;
+import java.util.Base64;
 import java.util.List;
 
 import javax.swing.text.html.parser.Entity;
@@ -38,9 +41,11 @@ public class ParseFile implements FileParser{
             //set the surname
             accountProfile.setSurname(tokens[1]);
             //set the image format
-            accountProfile.setImageFormat(tokens[2].split("/")[1]);
+            fileExtension = tokens[2].split("/")[1];
+            accountProfile.setImageFormat(fileExtension);
             //set the http image link
-            accountProfile.setHttpImageLink(tokens[3]);
+            File fileImage = convertCSVDataToImage(tokens[3]);
+            accountProfile.setHttpImageLink(createImageLink(fileImage));
             //persist the object
             EntityManager entityManager = entityManagerFactory.createEntityManager();
             //begin the transaction
@@ -56,9 +61,18 @@ public class ParseFile implements FileParser{
     }
 
     @Override
-    public File convertCSVDataToImage(String base64ImageData) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertCSVDataToImage'");
+    public File convertCSVDataToImage(String base64ImageData) throws IOException{
+        //decode the base64 data
+        byte[] imgData = Base64.getDecoder().decode(base64ImageData);
+        //create a new file
+        File imaFile = File.createTempFile("image", fileExtension);
+        //write the data to the file
+        OutputStream outputStream = new FileOutputStream(imaFile);
+        outputStream.write(imgData);
+        outputStream.close();
+        //return the file
+        return imaFile;
+
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.enviro.assessment.grad001.paulmaodi.assessment.entity;
 
+import java.net.URI;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,13 +22,13 @@ public class AccountProfile {
     private String imageFormat;
 
     
-    private String httpImageLink;
+    private URI httpImageLink;
 
 
-    public String getHttpImageLink() {
+    public URI getHttpImageLink() {
         return httpImageLink;
     }
-    public void setHttpImageLink(String httpImageLink) {
+    public void setHttpImageLink(URI httpImageLink) {
         this.httpImageLink = httpImageLink;
     }
     public Long getId() {
