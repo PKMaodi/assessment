@@ -1,53 +1,58 @@
 package com.enviro.assessment.grad001.paulmaodi.assessment.model;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
+import java.nio.file.Files;
 import java.util.List;
 
+import javax.swing.text.html.parser.Entity;
+
 import com.enviro.assessment.grad001.paulmaodi.assessment.entity.AccountProfile;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 public class ParseFile implements FileParser{
     //The file extension type to be read from the csv file
     private String fileExtension;
+    private EntityManagerFactory entityManagerFactory;
+    
+    public ParseFile(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
+    }
 
     @Override
     public void parseCSV(File csvFile) throws IOException{
-        //Read the CSV records
-        FileReader flReader;
-        BufferedReader buReader;
-        String lineString;
-        String[] records;
+    
+        //Read and store all lines from the csv file
+        List<String> records = Files.readAllLines(csvFile.toPath());
 
-        flReader = new FileReader(csvFile);
-        buReader = new BufferedReader(flReader);
-        lineString = buReader.readLine();
-
-        while(lineString != null){
-            records = lineString.split(",");
-            
-            //Creating an Account Profile
+        //Iterate through the lines
+        for(String line: records){
+            String[] tokens = line.split(",");
+            //create a new AccountProfile object
             AccountProfile accountProfile = new AccountProfile();
-            accountProfile.setName(records[0]);
-            accountProfile.setSurname(records[1]);
-            fileExtension = records[2];
-            accountProfile.setHttpImageLink(records[3]);
-            
-            //add the account profile to the H2 database
-            
-
+            //set the name
+            accountProfile.setName(tokens[0]);
+            //set the surname
+            accountProfile.setSurname(tokens[1]);
+            //set the image format
+            accountProfile.setImageFormat(tokens[2].split("/")[1]);
+            //set the http image link
+            accountProfile.setHttpImageLink(tokens[3]);
+            //persist the object
+            EntityManager entityManager = entityManagerFactory.createEntityManager();
+            //begin the transaction
+            entityManager.getTransaction().begin();
+            //persist the object
+            entityManager.persist(accountProfile);
+            //commit the transaction
+            entityManager.getTransaction().commit();
+            //close the entity manager
+            entityManager.close();
 
         }
-
-        //Persist the profiles to the database
-
-        
-        
-        
-        
     }
 
     @Override

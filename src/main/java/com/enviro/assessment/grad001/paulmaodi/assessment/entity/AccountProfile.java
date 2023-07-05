@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 
 @Entity
 public class AccountProfile {
@@ -14,8 +15,13 @@ public class AccountProfile {
     private String name;
     
     private String surname;
-      
-    String httpImageLink;
+    
+    @Transient
+    private String imageFormat;
+
+    
+    private String httpImageLink;
+
 
     public String getHttpImageLink() {
         return httpImageLink;
@@ -44,6 +50,11 @@ public class AccountProfile {
         this.surname = surname;
     }
 
-    
+    public String getImageFormat() {
+        return imageFormat;
+    }
+    public void setImageFormat(String imageFormat) {
+        this.imageFormat = imageFormat;
+    }
 
 }
