@@ -21,10 +21,19 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 @Service
 public class ParseFile implements FileParser {
-    private FileParser fileParser;
+
+    private AccountRepository accProfileRepo;
 
     @Autowired
-    private AccountRepository accProfileRepo;
+    public ParseFile(AccountRepository accProfileRepo) {
+        this.accProfileRepo = accProfileRepo;
+    }
+
+    public void startParsing() throws IOException, URISyntaxException {
+        File csvFile = new File(
+                "C:\\Users\\dell\\Desktop\\PK Maodi\\Assessment\\assessment\\src\\main\\resources\\1672815113084-GraduateDev_AssessmentCsv_Ref003.csv");
+        parseCSV(csvFile);
+    }
 
     @Override
     public void parseCSV(File csvFile) throws IOException, URISyntaxException {
@@ -90,11 +99,6 @@ public class ParseFile implements FileParser {
         httpUri = new URI(uriString);
         return httpUri;
 
-    }
-
-    public void setParsing() throws IOException, URISyntaxException {
-        File csvFile = new File("1672815113084-GraduateDev_AssessmentCsv_Ref003.csv");
-        fileParser.parseCSV(csvFile);
     }
 
 }
