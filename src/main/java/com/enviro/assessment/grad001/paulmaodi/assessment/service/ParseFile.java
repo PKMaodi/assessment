@@ -85,7 +85,7 @@ public class ParseFile implements FileParser {
 
     @Override
     public URI createImageLink(File fileImage) throws URISyntaxException {
-        String uriString = "http://localhost:37311/v1/api/image/" + fileImage.getName();
+        String uriString = "http://localhost:8081/v1/api/image/" + fileImage.getName();
         URI httpUri;
         httpUri = new URI(uriString);
         return httpUri;

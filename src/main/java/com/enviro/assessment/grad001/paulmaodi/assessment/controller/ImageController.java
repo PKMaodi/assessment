@@ -30,7 +30,7 @@ public class ImageController {
             e.printStackTrace();
         }
         accProfile = accRepo.findBySurnameAndName(name, surname);
-        fileSystemResource = new FileSystemResource(accProfile.getHttpImageLink().toString().substring(22));
+        fileSystemResource = new FileSystemResource(accProfile.getHttpImageLink().toString());
         if (accProfile == null)
             return null;
         else
