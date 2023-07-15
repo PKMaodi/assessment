@@ -4,9 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.Base64;
 import java.util.List;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.enviro.assessment.grad001.paulmaodi.assessment.entity.AccountProfile;
 import com.enviro.assessment.grad001.paulmaodi.assessment.repository.AccountRepository;
-import com.enviro.assessment.grad001.paulmaodi.assessment.service.AccountProfile.AccountProfileService;
 
 @Service
 public class ParseFile implements FileParser {
@@ -26,7 +24,7 @@ public class ParseFile implements FileParser {
     private AccountRepository accProfileRepo;
 
     @Override
-    public void parseCSV(File csvFile) throws IOException {
+    public void parseCSV(File csvFile) throws IOException, URISyntaxException {
 
         // Read and store all lines from the csv file
         List<String> records = Files.readAllLines(csvFile.toPath());
@@ -39,7 +37,7 @@ public class ParseFile implements FileParser {
             String base64ImageData = tokens[3];
             File ImageLink = convertCSVDataToImage(base64ImageData);
 
-            URL httpImageLink = createImageLink(ImageLink);
+            URI httpImageLink = createImageLink(ImageLink);
 
             // create a new AccountProfile object
             AccountProfile accountProfile = new AccountProfile();
@@ -48,7 +46,7 @@ public class ParseFile implements FileParser {
             // set the surname
             accountProfile.setSurname(surname);
             // set the httpImageLink
-            accountProfile.setHttpImageLink(httpImageLink);
+            accountProfile.setHttpImageLink(httpImageLink.toURL());
 
             // store to the database
             accProfileRepo.save(accountProfile);
@@ -71,20 +69,15 @@ public class ParseFile implements FileParser {
     }
 
     @Override
-    public URL createImageLink(File fileImage) {
-        String urlString = "http://localhost:37311/v1/api/image/" + fileImage.getName();
-        URL httpUrl;
-        try {
-            httpUrl = new URL(urlString);
-            return httpUrl;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public URI createImageLink(File fileImage) throws URISyntaxException {
+        String uriString = "http://localhost:37311/v1/api/image/" + fileImage.getName();
+        URI httpUri;
+        httpUri = new URI(uriString);
+        return httpUri;
 
     }
 
-    public void setParsing() throws IOException {
+    public void setParsing() throws IOException, URISyntaxException {
         File csvFile = new File("resources\\1672815113084-GraduateDev_AssessmentCsv_Ref003.csv");
         fileParser.parseCSV(csvFile);
     }
