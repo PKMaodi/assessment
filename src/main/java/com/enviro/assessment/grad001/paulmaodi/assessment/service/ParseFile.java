@@ -1,20 +1,23 @@
-package com.enviro.assessment.grad001.paulmaodi.assessment.service.File;
+package com.enviro.assessment.grad001.paulmaodi.assessment.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.enviro.assessment.grad001.paulmaodi.assessment.account.FileBinder;
 import com.enviro.assessment.grad001.paulmaodi.assessment.entity.AccountProfile;
 import com.enviro.assessment.grad001.paulmaodi.assessment.repository.AccountRepository;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 
 @Service
 public class ParseFile implements FileParser {
@@ -27,14 +30,26 @@ public class ParseFile implements FileParser {
     public void parseCSV(File csvFile) throws IOException, URISyntaxException {
 
         // Read and store all lines from the csv file
-        List<String> records = Files.readAllLines(csvFile.toPath());
+        // List<String> records = Files.readAllLines(csvFile.toPath());
+        List<FileBinder> data;
+        FileReader fileReader = new FileReader(csvFile);
+        CsvToBean<FileBinder> csvToBean = new CsvToBeanBuilder<FileBinder>(fileReader).withType(FileBinder.class)
+                .withIgnoreLeadingWhiteSpace(true).build();
 
-        for (String line : records) {
-            String[] tokens = line.split(",");
+        data = csvToBean.parse();
 
-            String name = tokens[0];
-            String surname = tokens[1];
-            String base64ImageData = tokens[3];
+        for (FileBinder tokens : data) {
+            /*
+             * String[] tokens = line.split(",");
+             * 
+             * String name = tokens[0];
+             * String surname = tokens[1];
+             * String base64ImageData = tokens[3];
+             */
+            String name = tokens.getName();
+            String surname = tokens.getSurname();
+            String base64ImageData = tokens.getImageData();
+
             File ImageLink = convertCSVDataToImage(base64ImageData);
 
             URI httpImageLink = createImageLink(ImageLink);
@@ -78,7 +93,7 @@ public class ParseFile implements FileParser {
     }
 
     public void setParsing() throws IOException, URISyntaxException {
-        File csvFile = new File("resources\\1672815113084-GraduateDev_AssessmentCsv_Ref003.csv");
+        File csvFile = new File("1672815113084-GraduateDev_AssessmentCsv_Ref003.csv");
         fileParser.parseCSV(csvFile);
     }
 

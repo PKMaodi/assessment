@@ -1,4 +1,4 @@
-package com.enviro.assessment.grad001.paulmaodi.assessment.service.File;
+package com.enviro.assessment.grad001.paulmaodi.assessment.service;
 
 import java.io.File;
 import java.io.IOException;

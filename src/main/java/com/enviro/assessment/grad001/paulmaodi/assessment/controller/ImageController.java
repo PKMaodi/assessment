@@ -1,13 +1,14 @@
 package com.enviro.assessment.grad001.paulmaodi.assessment.controller;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.bind.annotation.*;
 
 import com.enviro.assessment.grad001.paulmaodi.assessment.entity.AccountProfile;
 import com.enviro.assessment.grad001.paulmaodi.assessment.repository.AccountRepository;
-import com.enviro.assessment.grad001.paulmaodi.assessment.service.File.ParseFile;
+import com.enviro.assessment.grad001.paulmaodi.assessment.service.ParseFile;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +26,7 @@ public class ImageController {
 
         try {
             parseFile.setParsing();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
         accProfile = accRepo.findBySurnameAndName(name, surname);
