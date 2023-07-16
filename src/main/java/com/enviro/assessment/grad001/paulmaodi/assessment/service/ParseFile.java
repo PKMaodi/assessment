@@ -30,11 +30,6 @@ public class ParseFile implements FileParser {
         this.accProfileRepo = accProfileRepo;
     }
 
-    public void startParsing() throws IOException, URISyntaxException {
-        File csvFile = new File("1672815113084-GraduateDev_AssessmentCsv_Ref003.csv");
-        parseCSV(csvFile);
-    }
-
     @Override
     public void parseCSV(File csvFile) throws IOException, URISyntaxException {
 
