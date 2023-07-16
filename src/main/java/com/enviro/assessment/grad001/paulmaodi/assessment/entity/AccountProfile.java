@@ -6,16 +6,32 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ * Entity class for AccountProfile table in the database to store the account
+ * holder's name, surname and the httpImageLink.
+ */
 @Entity
 public class AccountProfile {
+    /**
+     * The id of the account holder.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    /**
+     * The name of the account holder.
+     */
     private String name;
 
+    /**
+     * The surname of the account holder.
+     */
     private String surname;
 
+    /**
+     * The httpImageLink of the decoded image.
+     */
     private URL httpImageLink;
 
     public URL getHttpImageLink() {

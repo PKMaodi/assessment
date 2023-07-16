@@ -10,26 +10,41 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.enviro.assessment.grad001.paulmaodi.assessment.account.FileBinder;
 import com.enviro.assessment.grad001.paulmaodi.assessment.entity.AccountProfile;
 import com.enviro.assessment.grad001.paulmaodi.assessment.repository.AccountRepository;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
+/**
+ * A class that implements the FileParser interface. The @Service annotation is
+ * used to indicate that the class is a service.
+ * 
+ */
 @Service
 public class ParseFile implements FileParser {
-
+    /**
+     * The AccountRepository dependency is injected into the constructor.
+     */
     private AccountRepository accProfileRepo;
 
+    /**
+     * The constructor is used to inject the AccountRepository dependency.
+     */
     @Autowired
     public ParseFile(AccountRepository accProfileRepo) {
         this.accProfileRepo = accProfileRepo;
     }
 
+    /**
+     * This method is used to parse the csv file.
+     * 
+     * @param csvFile The csv file to be parsed.
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     @Override
     public void parseCSV(File csvFile) throws IOException, URISyntaxException {
 
@@ -72,6 +87,13 @@ public class ParseFile implements FileParser {
         }
     }
 
+    /**
+     * This method is used to convert the base64ImageData to image.
+     * 
+     * @param base64ImageData The base64ImageData to be converted to image.
+     * @return The image.
+     * @throws IOException
+     */
     @Override
     public File convertCSVDataToImage(String base64ImageData) throws IOException {
         // decode the base64 data
@@ -88,6 +110,13 @@ public class ParseFile implements FileParser {
         return imaFile;
     }
 
+    /**
+     * This method is used to create the image link.
+     * 
+     * @param fileImage The image to be linked.
+     * @return The image link.
+     * @throws URISyntaxException
+     */
     @Override
     public URI createImageLink(File fileImage) throws URISyntaxException {
         String uriString = "http://localhost:8081/" + fileImage.getName();

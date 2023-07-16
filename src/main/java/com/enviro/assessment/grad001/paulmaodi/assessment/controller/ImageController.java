@@ -16,21 +16,45 @@ import com.enviro.assessment.grad001.paulmaodi.assessment.service.ParseFile;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * A Rest Controller that handles all the requests for the decoded image.
+ * The @RequiredArgsConstructor annotation is used to inject the
+ * AccountRepository dependency into the constructor. The @RestController
+ * annotation is used to indicate that the class is a controller and
+ * the @RequestMapping annotation is used to map the HTTP requests to the
+ * controller methods.
+ * 
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/api/image")
 public class ImageController {
-
+    /**
+     * The AccountRepository dependency is injected into the constructor.
+     */
     private AccountRepository accRepo;
 
     @Autowired
     private ParseFile parseFile = new ParseFile(accRepo);
 
+    /**
+     * The constructor is used to inject the AccountRepository dependency.
+     */
     public ImageController(AccountRepository accRepo) {
         this.accRepo = accRepo;
         this.parseFile = new ParseFile(accRepo);
     }
 
+    /**
+     * This method is used to get the decoded image from the database.
+     * The @GetMapping annotation is used to map the HTTP GET requests to the
+     * method, and the @PathVariable annotation is used to extract the name and
+     * surname from the request URL.
+     * 
+     * @param name    The name of the account holder.
+     * @param surname The surname of the account holder.
+     * @return The decoded image.
+     */
     @GetMapping(value = "/{name}/{surname}/{\\w\\.\\w}")
     public FileSystemResource getHttpImageLink(@PathVariable String name, @PathVariable String surname) {
         AccountProfile accProfile = accRepo.findBySurnameAndName(name, surname);
@@ -47,6 +71,13 @@ public class ImageController {
 
     }
 
+    /**
+     * This method is used to parse the CSV file on startup.
+     * The @PostConstruct annotation is used to indicate that the method should be
+     * executed after the dependency injection is done to perform any
+     * initialization.
+     * 
+     */
     @PostConstruct
     public void parseCSVOnStartup() {
         String csvFilePath = "1672815113084-GraduateDev_AssessmentCsv_Ref003.csv";
