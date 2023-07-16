@@ -1,12 +1,13 @@
 package com.enviro.assessment.grad001.paulmaodi.assessment.service;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 
@@ -30,8 +31,7 @@ public class ParseFile implements FileParser {
     }
 
     public void startParsing() throws IOException, URISyntaxException {
-        File csvFile = new File(
-                "C:\\Users\\dell\\Desktop\\PK Maodi\\Assessment\\assessment\\src\\main\\resources\\1672815113084-GraduateDev_AssessmentCsv_Ref003.csv");
+        File csvFile = new File("1672815113084-GraduateDev_AssessmentCsv_Ref003.csv");
         parseCSV(csvFile);
     }
 
@@ -81,20 +81,21 @@ public class ParseFile implements FileParser {
     public File convertCSVDataToImage(String base64ImageData) throws IOException {
         // decode the base64 data
         byte[] imgData = Base64.getDecoder().decode(base64ImageData);
+
+        Path imagePath = Paths.get("picture.png");
+
         // create a new file
-        File imaFile = File.createTempFile("image", ".png");
-        // write the data to the file
-        OutputStream outputStream = new FileOutputStream(imaFile);
-        outputStream.write(imgData);
-        outputStream.close();
+        File imaFile = imagePath.toFile();
+
+        Files.write(imagePath, imgData);
+
         // return the file
         return imaFile;
-
     }
 
     @Override
     public URI createImageLink(File fileImage) throws URISyntaxException {
-        String uriString = "http://localhost:8081/v1/api/image/" + fileImage.getName();
+        String uriString = "http://localhost:8081/" + fileImage.getName();
         URI httpUri;
         httpUri = new URI(uriString);
         return httpUri;
